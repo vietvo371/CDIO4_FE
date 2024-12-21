@@ -1,16 +1,13 @@
 <template>
- <template v-for="(v,k) in list_phim">
-    <template v-if="v.id == id">
-          <!-- Breadcrumb Begin -->
   <div class="breadcrumb-option" style="background-color: #0b0c2a">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
                         <router-link to="/"><i class="fa fa-home"></i> Home</router-link>
-                        <router-link :to="`/index1/${v.id_the_loai}`"> Thể Loại</router-link>
-                        <router-link :to="`/index1/${v.id_the_loai}`"> {{  v.ten_the_loai }}</router-link>
-                        <span>{{  v.ten_phim }}</span>
+                        <router-link to="/"> Thể Loại</router-link>
+                        <!-- <router-link :to="{ name: 'PageList', params: { id: v.id_tl, slug: v.slug_the_loai }}"> {{  v.ten_the_loai }}</router-link> -->
+                        <span>{{  obj_phim.ten_phim }}</span>
                     </div>
                 </div>
             </div>
@@ -24,14 +21,14 @@
             <div class="anime__details__content">
                 <div class="row">
                     <div class="col-lg-3">
-                        <div class="anime__details__pic set-bg" v-bind:style="{'background-image': 'url(' + v.hinh_anh + ')',}" data-setbg="../../../assets/assets_Anime/img/anime/details-pic.jpg">
+                        <div class="anime__details__pic set-bg" v-bind:style="{'background-image': 'url(' + obj_phim.hinh_anh + ')',}" data-setbg="../../../assets/assets_Anime/img/anime/details-pic.jpg">
                         </div>
                     </div>
                     <div class="col-lg-9">
                         <div class="anime__details__text">
                             <div class="anime__details__title">
-                                <h3>{{  v.ten_phim }}</h3>
-                                <span>{{  v.ten_tac_gia }}</span>
+                                <h3>{{  obj_phim.ten_phim }}</h3>
+                                <span>{{  obj_phim.ten_tac_gia }}</span>
                             </div>
                             <div class="anime__details__rating">
                                 <div class="rating">
@@ -43,7 +40,7 @@
                                 </div>
                                 <span>1.029 Votes</span>
                             </div>
-                            <p>{{  v.mo_ta }}</p>
+                            <p>{{  obj_phim.mo_ta }}</p>
                             <div class="anime__details__widget">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
@@ -52,7 +49,7 @@
                                             <li><span>Studios:</span> Lerche</li>
                                             <li><span>Date aired:</span> Oct 02, 2023 to ?</li>
                                             <li><span>Status:</span> Airing</li>
-                                            <li><span>Genre:</span> {{ v.ten_the_loai }}</li>
+                                            <li><span>Genre:</span> {{ obj_phim.ten_the_loai }}</li>
                                         </ul>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
@@ -69,10 +66,10 @@
                             <div class="anime__details__btn">
                                  <button   v-if="isFollow == false" type="button"  @click="anTheoDoi()  " class="unfollow-btn"><i class="fa fa-heart-o"></i> Theo Dõi</button>
                                  <button   v-else type="button" @click="unTheoDoi()" class="follow-btn"><i class="fa-solid fa-heart"></i> Bỏ Theo Dõi</button>
-                                    <router-link :to="`/index3/${v.id}`">
-                                        <a v-bind:href="'/index3/' + v.id" class="watch-btn"><span>Xem Ngay</span> </a>
+                                    <router-link :to="`/watching/${obj_phim.slug_phim}`">
+                                        <a v-bind:href="'/watching/' + obj_phim.slug_phim" class="watch-btn"><span>Xem Ngay</span> </a>
                                     </router-link>
-                                
+
                                 </div>
                             </div>
                         </div>
@@ -94,14 +91,14 @@
                                                 <p>Phim đã hay mà admin còn đẹp trai nữa còn gì bằng !!!</p>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
-                                       
+
                             </div>
-                            <template v-for="(v,k) in list_cmt">
-                                <div v-if="v.id_phim == id " class="anime__review__item">
+                            <template v-for="(v,k) in list_cmt" :key="k">
+                                <div v-if="v.id_phim == obj_phim.id " class="anime__review__item">
                                     <div class="anime__review__item__pic">
-                                        <img v-bind:src="v.hinh_anh" alt="">
+                                        <img v-bind:src="v.avatar" alt="">
                                     </div>
                                     <div class="anime__review__item__text">
                                         <div class="row">
@@ -132,21 +129,25 @@
                             <div class="section-title">
                                 <h5>hot phim</h5>
                             </div>
-                            <template v-for="(v,k) in list_5_phim ">
+                            <template v-for="(v,k) in list_5_phim " :key="k">
                                 <div class="product__sidebar__comment__item">
-                                <a v-bind:href="'/index2/' + v.id" > 
-                                    <div class="product__sidebar__comment__item__pic">
-                                        <img v-bind:src="v.hinh_anh" style="width: 99px ;" alt="" />
-                                    </div>
-                                </a>
+                                    <router-link :to="{ name: 'PageDelist', params: { id: v.id, slug: v.slug_phim }}">
+                                        <a v-bind:href="'/de-list/' + v.slug_phim" >
+                                            <div class="product__sidebar__comment__item__pic">
+                                                <img v-bind:src="v.hinh_anh" style="width: 99px ;" alt="" />
+                                            </div>
+                                        </a>
+                                    </router-link>
+
                                 <div class="product__sidebar__comment__item__text">
                                     <ul>
                                     <li>{{ v.ten_the_loai }}</li>
                                     <li>{{ v.ten_loai_phim }}</li>
                                     </ul>
                                     <h5>
-                                            <a  v-bind:href="'/index2/' + v.id">
-                                            {{ v.ten_phim }}</a>
+                                            <router-link :to="{ name: 'PageDelist', params: { id: v.id, slug: v.slug_phim }}">
+                                                {{ v.ten_phim }}
+                                            </router-link>
                                     </h5>
                                     <span><i class="fa fa-eye"></i> 19.141 lượt xem</span>
                                 </div>
@@ -173,10 +174,6 @@
     </section>
         <!-- Anime Section End -->
 
-        <!-- Footer Section Begin -->
-    </template>
- </template>
-       
 
 </template>
 <script>
@@ -188,51 +185,51 @@
     });
 
     export default {
+         props : [ 'slug'],
         data() {
             return {
-				id : this.$route.params.id,
-                id_user        : localStorage.getItem('id_user'), 
-                obj_yt_phim    : { 'id_khach_hang' : localStorage.getItem('id_user'), 'id_phim' : this.$route.params.id},
-                obj_cmt_phim   : { 'id_khach_hang' : localStorage.getItem('id_user'), 'id_phim' : this.$route.params.id,},
+				// id : this.$route.params.id,
+                id_phim        : '',
+                id_user        : localStorage.getItem('id_user'),
+                obj_yt_phim    : { 'id_khach_hang' : localStorage.getItem('id_user'),},
+                obj_cmt_phim   : { 'id_khach_hang' : localStorage.getItem('id_user'),},
                 obj_xoa_cmt    : {},
-                list_loai_phim : [],
-                list_the_loai  : [],
-                list_tac_gia   : [],
-                list_5_phim: [],
-                list_phim      : [],
+                list_5_phim    :  [],
+                obj_phim      : {},
                 list_cmt       : [],
                 isFollow       : {},
              };
         },
         mounted() {
-            this.laydataLoaiPhim();
-            this.loaddataTheLoai();
-            this.laydataPhim();
             this.checkYeuThich();
             this.laydataCMT();
+            this.laydataDelistPhim();
+
+
         },
+        watch: {
+        $route(to, from){
+          this.laydataDelistPhim();
+        //   this.id_phim   = this.id;
+          this.obj_yt_phim    = { 'id_khach_hang' : localStorage.getItem('id_user'),};
+          this.obj_cmt_phim   = { 'id_khach_hang' : localStorage.getItem('id_user'),};
+          this.laydataCMT();
+          this.checkYeuThich();
+        }
+      },
         methods: {
-            laydataPhim() {
+            laydataDelistPhim() {
                 axios
-                .get("http://127.0.0.1:8000/api/phim/lay-du-lieu-show")
+                .get("http://127.0.0.1:8000/api/phim/lay-data-delist", {
+                    params :{
+                    slug : this.slug,
+                    } })
                 .then((res) => {
-                    this.list_phim = res.data.phim;
+                    this.obj_phim = res.data.phim;
+                    this.obj_cmt_phim.id_phim = res.data.phim.id;
+                    this.obj_yt_phim.id_phim = res.data.phim.id;
                     this.list_5_phim = res.data.phim_5_obj;
 
-                });
-            },
-            laydataLoaiPhim() {
-                axios
-                .get("http://127.0.0.1:8000/api/loai-phim/lay-du-lieu-show")
-                .then((res) => {
-                    this.list_loai_phim = res.data.loai_phim;
-                });
-            },
-            loaddataTheLoai() {
-                axios
-                .get("http://127.0.0.1:8000/api/the-loai/lay-du-lieu-show")
-                .then((res) => {
-                    this.list_the_loai = res.data.the_loai;
                 });
             },
             laydataCMT() {
@@ -254,7 +251,6 @@
                         }
                         });
             },
-             
             anTheoDoi(){
                 baseRequest
                 .post("admin/yeu-thich/thong-tin-tao" , this.obj_yt_phim)
@@ -268,7 +264,7 @@
                 }
                 });
             },
-           
+
             unTheoDoi() {
                 baseRequest
                     .post('admin/yeu-thich/thong-tin-xoa' , this.obj_yt_phim)
@@ -291,7 +287,7 @@
                 .then((res) => {
                 if (res.data.status == true) {
                     toaster.success(res.data.message);
-                    this.obj_cmt_phim   = { 'id_khach_hang' : localStorage.getItem('id_user'), 'id_phim' : this.$route.params.id, 'noi_dung' : ''};
+                    this.obj_cmt_phim   = { 'id_khach_hang' : localStorage.getItem('id_user'), 'id_phim' : this.id, 'noi_dung' : ''};
                     this.laydataCMT();
                 } else {
                     toaster.error(res.data.message);

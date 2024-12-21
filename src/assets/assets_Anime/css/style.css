@@ -36,7 +36,7 @@ body {
 	height: 100%;
 	font-family: "Mulish", sans-serif;
 	-webkit-font-smoothing: antialiased;
-	/* background: #0b0c2a; */
+	background: #0b0c2a;
 }
 
 h1,
@@ -437,6 +437,9 @@ ol {
 .slicknav_menu {
 	display: none;
 }
+
+
+
 
 /*---------------------
   Hero
@@ -936,12 +939,41 @@ ol {
 	color: #ffffff;
 }
 
-.product__pagination a.current-page {
+.product__pagination a.current_page {
 	border: 1px solid #ffffff;
 }
 
 .product__pagination a i {
 	color: #b7b7b7;
+	font-size: 15px;
+}
+/*   */
+.product__pagination button {
+	display: inline-block;
+	font-size: 15px;
+	color: #b7b7b7;
+	font-weight: 600;
+	height: 50px;
+	width: 50px;
+	border: 1px solid transparent;
+	border-radius: 50%;
+	line-height: 48px;
+	text-align: center;
+	-webkit-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+}
+
+.product__pagination button:hover {
+	color: #ffffff;
+}
+
+.product__pagination button.current_page {
+	border: 1px solid #ffffff;
+}
+
+.product__pagination button i {
+	color: #1a1919;
 	font-size: 15px;
 }
 
@@ -2161,6 +2193,9 @@ ol {
 @media only screen and (max-width: 767px) {
 	.hero {
 		overflow: hidden;
+	}
+	.product__item__pic {
+		width: 100%;
 	}
 	.header {
 		position: relative;

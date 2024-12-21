@@ -6,7 +6,7 @@
                     <div class="">
                     </div>
                     <div class="">
-                        <h4 class="logo-text text-danger">ADMIN</h4> 
+                        <h4 class="logo-text text-danger">ADMIN</h4>
                     </div>
                 </div>
                 <div class="mobile-toggle-menu"><i class='bx bx-menu'></i></div>
@@ -21,50 +21,23 @@
                     </div>
                 </div>
                 <div class="top-menu ms-auto">
-                    <ul class="navbar-nav align-items-center">
-                        <li class="nav-item mobile-search-icon">
-                            <a class="nav-link" href="#"> <i class='bx bx-search'></i>
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown dropdown-large">
-                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false"> <i
-                                    class='bx bx-category'></i>
-                            </a>
-                            
-                        </li>
-                        <li class="nav-item dropdown dropdown-large">
-                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative"
-                                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="alert-count">7</span>
-                                <i class='bx bx-bell'></i>
-                            </a>
-                            
-                        </li>
-                        <li class="nav-item dropdown dropdown-large">
-                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative"
-                                href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false"> <span class="alert-count">8</span>
-                                <i class='bx bx-comment'></i>
-                            </a>
-                           
-                        </li>
-                    </ul>
                 </div>
                 <div class="user-box dropdown">
                     <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret"
                         href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img v-bind:src="img" class="user-img" alt="user avatar">
+                        <img :src="img" class="user-img" alt="user avatar">
                         <div class="user-info ps-3">
-                            <p class="user-name mb-0">{{ user }}</p>
-                            <p class="designattion mb-0">Admin WAnime</p>
+                            <p class="user-name mb-0"><b>{{ user }}</b></p>
+                            <p class="designattion mb-0">{{  }}</p>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <!-- <li><a class="dropdown-item" href="javascript:;"><i
-                                    class="bx bx-user"></i><span>Profile</span></a>
-                        </li> -->
-                       
+                        <li>
+                            <router-link to="/admin/profile">
+                                <a class="dropdown-item" href="javascript:;"><i class="bx bx-user"></i><span>Profile</span></a>
+                            </router-link>
+                        </li>
+
                         <li><a @click="removeToken()" class="dropdown-item" href="javascript:;"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
                         </li>
                     </ul>
@@ -75,12 +48,14 @@
     </template>
     <script>
     import axios from "axios";
+    import { createToaster } from "@meforma/vue-toaster";
+    const toaster = createToaster({ position: "top-right" });
     export default {
-        
+
         data() {
             return {
                 user : 'chưa dang nhap',
-                img : '',
+                img : 'https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/438223092_924978372646480_8892922029517455750_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=1M_bsPbrCFAQ7kNvgFx_sSo&_nc_ht=scontent.fsgn2-6.fna&oh=00_AfAK4f4KmvMgcb_wJwjzxOqtkSWXMdaTIqYWIyTbbaxS8g&oe=663FBF44',
             }
         },
         mounted() {
@@ -91,7 +66,10 @@
             removeToken() {
                     localStorage.removeItem('token');
                     localStorage.removeItem('hinh_anh');
-                    this.checkToken()
+                    localStorage.removeItem('id_admin');
+                    this.$router.push('/admin/login');
+                    toaster.success('Bạn đã đăng xuất thành công!');
+                    // this.checkToken()
               },
             checkToken() {
                     axios
@@ -106,19 +84,18 @@
                             // localStorage.setItem('hinh_anh', res.data.hinh_anh);
                             if (res.status === 200) {
                                 // this.list_token = res.data.list;
-
                             }
 
                         })
                         .catch(() => {
                             this.$router.push('/admin/anime');
-                            
+
                         });
-        },  
         },
-        
+        },
+
     }
     </script>
     <style>
-        
+
     </style>
