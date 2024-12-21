@@ -82,18 +82,18 @@
                                     <td class="text-center align-middle text-nowrap">
                                         {{ v.slug_the_loai }}
                                     </td>
-
-                                    <td class="text-center align-middle text-nowrap">
+                                    <td class="text-center align-middle text-nowrap text-center">
                                         <button @click="doiTrangThai(v)" v-if="v.tinh_trang == 1"
-                                            class="btn btn-success">
+                                            class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3" style="border: none;">
                                             Hoạt Động
                                         </button>
                                         <button @click="doiTrangThai(v)" v-if="v.tinh_trang == 0"
-                                            class="btn btn-warning">
+                                            class="badge rounded-pill text-warning bg-light-success p-2 text-uppercase px-3" style="border: none;">
                                             Tạm Dừng
                                         </button>
                                     </td>
-                                    <td class="text-center align-middle text-nowrap">
+
+                                    <td class="text-center align-middle text-nowrap text-center">
                                         <button @click="Object.assign(obj_update_the_loai, v)" type="button"
                                             class="btn btn-success me-1" data-bs-toggle="modal"
                                             data-bs-target="#Chinhsua">
@@ -213,6 +213,7 @@
 </template>
 <script>
 import axios from "axios";
+import functionBasic from "../../../core/functionBasic";
 import baseRequest from "../../../core/baseRequest";
 import { getPageNumbers } from "../../../core/paginationUtils.js";
 import { createToaster } from "@meforma/vue-toaster";
@@ -223,8 +224,9 @@ export default {
     data() {
         return {
             is_create: 0,
-            is_update: 0,
+            is_update: 1,
             list_the_loai: [],
+            list_danh_muc: [],
             key_tim: {},
             obj_add_the_loai: {},
             obj_update_the_loai: {},
@@ -308,13 +310,21 @@ export default {
                         toaster.error(res.data.message);
                         this.is_update = 0;
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
         loaddataTheLoai(page) {
             baseRequest.get("admin/the-loai/lay-du-lieu?page=" + page).then((res) => {
                 this.list_the_loai = res.data.the_loai.dataAdmin.data;
                 this.pagination = res.data.the_loai.pagination;
-            });
+            })
+            .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
+                });
         },
         taoDataTheLoai() {
             baseRequest
@@ -327,6 +337,10 @@ export default {
                     } else {
                         toaster.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
         searchTheLoai(page) {
@@ -336,6 +350,11 @@ export default {
                 .then((res) => {
                     this.list_the_loai = res.data.the_loai.dataAdmin.data;
                     this.pagination = res.data.the_loai.pagination;
+                    this.list_danh_muc = res.data.list_danh_muc;
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
         deleteTheLoai() {
@@ -343,11 +362,15 @@ export default {
                 .delete("admin/the-loai/thong-tin-xoa/" + this.obj_delete_the_loai.id)
                 .then((res) => {
                     if (res.data.status == true) {
-                        toaster.success("Thông báo<br>" + res.data.message);
-                        this.loaddataTheLoai(1);
+                        toaster.success( res.data.message);
+                        this.changPage(this.pagination.current_page);
                     } else {
-                        toaster.danger("Thông báo<br>" + res.data.message);
+                        toaster.danger( res.data.message);
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
         updateTheLoai() {
@@ -355,11 +378,15 @@ export default {
                 .put("admin/the-loai/thong-tin-cap-nhat", this.obj_update_the_loai)
                 .then((res) => {
                     if (res.data.status == true) {
-                        toaster.success("Thông báo<br>" + res.data.message);
-                        this.loaddataTheLoai(1);
+                        toaster.success( res.data.message);
+                        this.changPage(this.pagination.current_page);
                     } else {
-                        toaster.danger("Thông báo<br>" + res.data.message);
+                        toaster.danger( res.data.message);
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
 
@@ -368,11 +395,15 @@ export default {
                 .put("admin/the-loai/thong-tin-thay-doi-trang-thai", xyz)
                 .then((res) => {
                     if (res.data.status == true) {
-                        toaster.success("Thông báo<br>" + res.data.message);
-                        this.loaddataTheLoai(1);
+                        toaster.success( res.data.message);
+                        this.changPage(this.pagination.current_page);
                     } else {
                         toaster.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
     },

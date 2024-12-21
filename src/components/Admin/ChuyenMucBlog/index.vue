@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
             <div class="card border-5 border-primary border-top">
                 <div class="card-header">
                     <b>THÊM CHUYÊN MỤC</b>
@@ -71,11 +71,13 @@
                                     <td class=" align-middle text-nowrap">{{ v.ten_chuyen_muc }}</td>
                                     <td class=" align-middle text-nowrap">{{ v.slug_chuyen_muc }}</td>
 
-                                    <td class=" align-middle text-nowrap">
-                                        <button @click="doiTrangThai(v)" v-if="v.tinh_trang == 1" class="btn btn-success">
+                                    <td class="text-center align-middle text-nowrap text-center">
+                                        <button @click="doiTrangThai(v)" v-if="v.tinh_trang == 1"
+                                            class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3" style="border: none;">
                                             Hoạt Động
                                         </button>
-                                        <button @click="doiTrangThai(v)" v-if="v.tinh_trang == 0" class="btn btn-warning">
+                                        <button @click="doiTrangThai(v)" v-if="v.tinh_trang == 0"
+                                            class="badge rounded-pill text-warning bg-light-success p-2 text-uppercase px-3" style="border: none;">
                                             Tạm Dừng
                                         </button>
                                     </td>
@@ -193,6 +195,7 @@
 <script>
 import axios from "axios";
 import baseRequest from '../../../core/baseRequest';
+import functionBasic from "../../../core/functionBasic";
 import { createToaster } from "@meforma/vue-toaster";
 import { getPageNumbers } from "../../../core/paginationUtils.js";
 const toaster = createToaster({
@@ -202,7 +205,7 @@ export default {
     data() {
         return {
             is_create: 0,
-            is_update: 0,
+            is_update: 1,
             list_chuyen_muc: [],
             key_tim: {},
             obj_add_chuyen_muc: {},
@@ -270,6 +273,10 @@ export default {
                         toaster.error(res.data.message);
                         this.is_create = 0;
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
 
@@ -290,6 +297,10 @@ export default {
                         this.is_update = 0;
 
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
         loaddataChuyenMuc(page) {
@@ -298,6 +309,10 @@ export default {
                 .then((res) => {
                     this.list_chuyen_muc = res.data.chuyen_muc_admin.dataAdmin.data;
                     this.pagination = res.data.chuyen_muc_admin.pagination;
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
         taoDataChuyenMuc() {
@@ -314,6 +329,10 @@ export default {
                     } else {
                         toaster.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
         searchChuyenMuc(page) {
@@ -323,6 +342,10 @@ export default {
                 .then((res) => {
                     this.list_chuyen_muc = res.data.chuyen_muc_admin.dataAdmin.data;
                     this.pagination = res.data.chuyen_muc_admin.pagination;
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
         deleteTheLoai() {
@@ -336,6 +359,10 @@ export default {
                     else {
                         toaster.danger('Thông báo<br>' + res.data.message);
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
         updateTheLoai() {
@@ -348,6 +375,10 @@ export default {
                     } else {
                         toaster.danger('Thông báo<br>' + res.data.message);
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         },
 
@@ -361,6 +392,10 @@ export default {
                     } else {
                         toaster.error(res.data.message);
                     }
+                })
+                .catch((res) => {
+                    var errors = Object.values(res.response.data.errors);
+                    toaster.error(errors[0]);
                 });
         }
     },

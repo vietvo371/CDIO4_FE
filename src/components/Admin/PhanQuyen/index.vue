@@ -197,6 +197,7 @@
 import axios from 'axios';
 import baseRequest from '../../../core/baseRequest';
 import { createToaster } from "@meforma/vue-toaster";
+import functionBasic from "../../../core/functionBasic";
 const toaster = createToaster({ position: "top-right" });
 export default {
     data() {
@@ -237,9 +238,7 @@ export default {
                 })
                 .catch((res) => {
                     var errors = Object.values(res.response.data.errors);
-                    errors.forEach(function(v, k) {
-                        toaster.error('Có Lỗi<br>' + v[0]);
-                    });
+                    toaster.error(errors[0]);
                 });
         },
         getChucNang() {
@@ -250,9 +249,7 @@ export default {
                 })
                 .catch((res) => {
                     var errors = Object.values(res.response.data.errors);
-                    errors.forEach(function(v, k) {
-                        toaster.error('Có Lỗi<br>' + v[0]);
-                    });
+                    toaster.error(errors[0]);
                 });
         },
 
@@ -269,9 +266,7 @@ export default {
                 })
                 .catch((res) => {
                     var errors = Object.values(res.response.data.errors);
-                    errors.forEach(function(v, k) {
-                        toaster.error('Có Lỗi<br>' + v[0]);
-                    });
+                    toaster.error(errors[0]);
                 });
         },
 

@@ -10,17 +10,15 @@ export default function(to, from, next) {
             }}
         )
         .then((res) => {
-            localStorage.setItem('ho_ten', res.data.ho_ten);
-            localStorage.setItem('hinh_anh', res.data.hinh_anh);
             if(res.status === 200) {
                 next();
             } else {
-                toaster.warning('Thông báo<br>Bạn cần đăng nhập hệ thống trước!');
+                this.$store.dispatch('showWarning', {description: "Bạn cần đăng nhập hệ thống trước",});
                 next('/admin/login');
             }
         })
         .catch(() => {
-            toaster.warning('Thông báo<br>Bạn cần đăng nhập hệ thống trước!');
+            // this.$store.dispatch('showWarning', {description: "Bạn cần đăng nhập hệ thống trước",});
             next('/admin/login');
         });
 }
